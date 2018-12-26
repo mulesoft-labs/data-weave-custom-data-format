@@ -1,0 +1,5 @@
+columns:
+  - name: name
+    width: 20
+  - name: lastName
+    width: 20
