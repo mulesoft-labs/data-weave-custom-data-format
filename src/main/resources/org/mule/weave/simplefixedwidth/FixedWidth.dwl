@@ -1,8 +1,14 @@
+/**
+* This module registers a new custom Data Format using the @DataFormatExtension.
+*/
 %dw 2.0
 import * from dw::extension::DataFormat
 import fail from dw::Runtime
 import dw::core::Binaries
 
+/**
+* In order to define the reader and writer configuration properties data weave types needs to be used.
+*/
 type SchemaUrlSettings = {
     /**
     * The url of the schema for example "classpath://myschema.yaml" or "file:///user/home/myschema.yaml"
@@ -66,10 +72,17 @@ fun writeFixedWidth(content: Any, settings: SchemaUrlSettings & EncodingSettings
 }
 
 
+/**
+* This is the extension where the DataFormat is registered.
+* The value needs to implement the DataFormat type from `dw::extension::DataFormat`
+*/
 @DataFormatExtension
 var ndjson: DataFormat<SchemaUrlSettings, SchemaUrlSettings & EncodingSettings> = {
+  //All the mime types accepted by this DataFormat
   acceptedMimeTypes: ["application/x-fw", "application/x-fixed-width"],
   fileExtensions: [".fw"],
+  //Reference to the function that is going to be used for transforming the Binary value into the properer DataWeave value
   reader: readFixedWidth,
+  //Reference to the function that will transform the DataWeave value into a Binary data
   writer: writeFixedWidth
 }
